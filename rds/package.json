@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "DEBUG=b:* nodemon -r dotenv/config src/app.js",
+    "dev": "docker compose -f ./dockerfiles/stack.yaml --env-file ../.env up --build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
