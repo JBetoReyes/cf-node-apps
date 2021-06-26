@@ -5,18 +5,32 @@ services:
     image: postgres
     restart: always
     environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ../dbdata/db/:/var/lib/postgresql/data/
+      - ../scripts/init-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
 
   pgadmin:
     image: dpage/pgadmin4
     restart: always
+    depends_on:
+      - "db"
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+
     ports:
       - 8080:80
+    volumes:
+      - ../dbdata/pgadmin/:/var/lib/pgadmin/
+      - ../dbdata/pgadmin4/servers.json:/pgadmin4/servers.json
+
 
   web:
+    depends_on:
+      - "db"
     volumes:
       - ..:/usr/app/
       - /usr/app/node_modules
@@ -24,6 +38,10 @@ services:
       context: ..
       args:
         APP_PORT: $APP_PORT
+        POSTGRES_HOST: ${POSTGRES_HOST}
+        POSTGRES_DB: ${POSTGRES_DB}
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - $APP_PORT:$APP_PORT
 
