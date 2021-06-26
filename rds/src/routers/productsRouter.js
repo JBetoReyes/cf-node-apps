@@ -15,8 +15,20 @@ class ProductsRouter extends BaseRouter {
   }
   getProducts() {
     return {
-      handler: (req, res) => {
-        res.json({ name: 'hello world'})
+      handler: async (req, res) => {
+        const models = this._app.get('models');
+        const { Product } = models;
+        let products;
+        try {
+          products = await Product.findAll();
+        } catch (err) {
+          console.log(err);
+        }
+        res.json({ 
+          data: { 
+            products: products.map(p => p.get({ plain: true }))
+          }
+        });
       }
     }
   }
