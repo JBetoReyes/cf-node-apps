@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "DEBUG=b:* nodemon -r dotenv/config src/app.js",
-    "dev": "docker compose -f ./dockerfiles/stack.yaml --env-file ../.env up --build",
+    "dev": "docker compose -f ./dockerfiles/stack.yaml --env-file ../.env up --build -d",
+    "dev:down": "docker compose -f ./dockerfiles/stack.yaml --env-file ../.env down",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,7 +14,10 @@
   "dependencies": {
     "debug": "^4.3.1",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.6.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
