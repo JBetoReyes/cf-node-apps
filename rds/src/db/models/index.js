@@ -10,7 +10,9 @@ class ModelsManager {
 
   initModels() {
     this._classModels.forEach((model) => {
-      new model(this._sequelize).initModel();
+      const dbModel = new model(this._sequelize);
+      dbModel.initModel();
+      dbModel.sync();
     });
   }
 }

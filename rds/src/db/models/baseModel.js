@@ -6,7 +6,12 @@ class BaseModel {
   }
 
   initModel() {
-    return this._sequelize.define(this._modelName, this._schema);
+    this._model = this._sequelize.define(this._modelName, this._schema);
+    return this._model;
+  }
+
+  sync(prefs = {}) {
+    this._model.sync(prefs);
   }
 }
 
