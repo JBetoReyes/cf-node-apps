@@ -34,9 +34,21 @@ class ProductsRouter extends BaseRouter {
   }
   postProduct() {
     return {
-      handler: (req, res) => {
+      handler: async (req, res) => {
         console.log('params: ', req.params);
-        res.json({ name: 'hello world'})
+        const models = this._app.get('models');
+        const { Product } = models;
+        const myProduct = Product.build({
+          model: '123',
+          maker: 'A',
+          type: 'PC'
+        });
+        try {
+          myProduct.save();
+        } catch (err) {
+          console.log(err);
+        }
+        res.json({ product: myProduct.get({ plain: true })})
       }
     };
   }
